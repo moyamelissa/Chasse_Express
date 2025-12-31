@@ -30,7 +30,7 @@ Ce jeu est une réinterprétation moderne et personelle, inspirée du légendair
 3. Téléchargez ou clonez ce dépôt GitHub.
 
    ```
-	git clone [https://github.com/moyamelissa/chasse-express.git](https://github.com/moyamelissa/Chasse_Express)
+	git clone https://github.com/moyamelissa/Chasse_Express
 	cd chasse-express
 	```
    
@@ -44,16 +44,30 @@ Ce jeu est une réinterprétation moderne et personelle, inspirée du légendair
 - **Souris** :
   - Cliquez sur le chien pour le faire aboyer et démarrer la partie.
   - Cliquez sur les pies pour les capturer.
+ 
+## Aperçu
+![Aperçu du jeu](Chasse_Express.png)
 
 ## Crédits
 
-- **Développement et graphismes** : Melissa Moya
-- **Inspirations** : Alberta, Canmore, Jasper (mon Sheltie), et les jeux rétro comme Duck Hunt.
-- **Icônes** : [Flaticon](https://www.flaticon.com/animated-icons)
-- **Musique** : [Sounddino](https://sounddino.com)
-- **Arrière-plans** : Retirés avec [remove.bg](https://remove.bg)
-- **Sheltie** : [Vecteezy](https://vecteezy.com)
-- **Arbre** : [PNGTree](https://pngtree.com)
+### Développement
+- **Code, graphismes et conception** : Melissa Moya
+- **Assistance à la programmation** : GitHub Copilot
+
+### Inspirations
+- La province de l'Alberta
+- Le jeux rétro Duck Hunt
+
+### Objets et éléments du jeu
+- **Sheltie** : https://vecteezy.com
+- **Arbre** : https://pngtree.com
+- **Icônes** : https://www.flaticon.com
+- **Arrière-plan du jeux** : https://wallpaperaccess.com
+
+### Ressources graphiques et sonores
+- **Musique** : https://sounddino.com
+- **Arrière-plan** : https://wallpaperaccess.com
+- **Détourage d’images**: https://remove.bg
 
 ## Licence
 
