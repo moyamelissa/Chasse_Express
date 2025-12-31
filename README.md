@@ -20,12 +20,20 @@ Ce jeu est une réinterprétation moderne et personelle, inspirée du légendair
 
 ## Installation
 
-1. Assurez-vous d’avoir Python 3.x installé.
+1. Installer Python 3.x
+   https://www.python.org/downloads/
+
 2. Installez la bibliothèque pygame :
 	```
 	pip install pygame
 	```
 3. Téléchargez ou clonez ce dépôt GitHub.
+
+   ```
+	git clone [https://github.com/moyamelissa/chasse-express.git](https://github.com/moyamelissa/Chasse_Express)
+	cd chasse-express
+	```
+   
 4. Placez-vous dans le dossier du projet et lancez le jeu :
 	```
 	python chasse_express.py
