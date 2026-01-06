@@ -1,3 +1,5 @@
+[![CI](https://github.com/moyamelissa/Chasse_Express/actions/workflows/python-app.yml/badge.svg)](https://github.com/moyamelissa/Chasse_Express/actions)
+
 # Chasse Express
 
 **Chasse Express** is a 2D skill game developed in **Python** with **Pygame**. Play as a hunter accompanied by your loyal Sheltie dog, whose bark makes magpies appear and scares them away! Aim carefully and capture the required number of magpies before time runs out.
