@@ -11,7 +11,18 @@ from typing import List, Tuple, Optional
 FONT_CACHE = {}
 ICON_CACHE = {}
 
-def load_font(font_names, size):
+def load_font(font_names: str | list, size: int) -> "pygame.font.Font":
+    """
+    Charge la première police trouvée dans la liste, sinon une police système.
+    Utilise un cache pour éviter de recharger plusieurs fois la même police.
+
+    Args:
+        font_names (str | list): Nom ou liste de noms de polices à essayer.
+        size (int): Taille de la police.
+
+    Returns:
+        pygame.font.Font: Objet police pygame.
+    """
     import pygame
     key = (tuple(font_names) if isinstance(font_names, list) else font_names, size)
     if key in FONT_CACHE:
@@ -37,7 +48,21 @@ def load_font(font_names, size):
     FONT_CACHE[key] = font
     return font
 
-def load_icon(path, fallback_size=32):
+def load_icon(path: str, fallback_size: int = 32) -> "pygame.Surface":
+    """
+    Charge une icône depuis un fichier, ou crée une icône de secours si le fichier n'existe pas.
+    Utilise un cache pour éviter de recharger plusieurs fois la même icône.
+
+    Args:
+        path (str): Chemin du fichier image.
+        fallback_size (int): Taille de l'icône de secours.
+
+    Returns:
+        pygame.Surface: Surface de l'icône.
+
+    Raises:
+        GameResourceError: Si le chargement échoue et le fallback n'est pas possible.
+    """
     import pygame
     if path in ICON_CACHE:
         return ICON_CACHE[path]
@@ -47,13 +72,40 @@ def load_icon(path, fallback_size=32):
         ICON_CACHE[path] = icon
         return icon
     except (pygame.error, FileNotFoundError) as e:
-        surf = pygame.Surface((fallback_size, fallback_size), pygame.SRCALPHA)
-        pygame.draw.rect(surf, (180, 180, 180, 200), (0, 0, fallback_size, fallback_size), border_radius=6)
-        pygame.draw.rect(surf, (120, 120, 120, 220), (0, 0, fallback_size, fallback_size), 2, border_radius=6)
-        ICON_CACHE[path] = surf
-        return surf
+        try:
+            surf = pygame.Surface((fallback_size, fallback_size), pygame.SRCALPHA)
+            pygame.draw.rect(surf, (180, 180, 180, 200), (0, 0, fallback_size, fallback_size), border_radius=6)
+            pygame.draw.rect(surf, (120, 120, 120, 220), (0, 0, fallback_size, fallback_size), 2, border_radius=6)
+            ICON_CACHE[path] = surf
+            return surf
+        except Exception as fallback_error:
+            raise GameResourceError(f"Impossible de charger ou de créer une icône pour {path}") from fallback_error
 
-def draw_text_with_outline(surface, text, font, pos, main_color, outline_color=(255,255,255), shadow_color=(0,0,0), outline_offset=2, shadow_offset=4):
+def draw_text_with_outline(
+    surface: "pygame.Surface",
+    text: str,
+    font: "pygame.font.Font",
+    pos: tuple,
+    main_color: tuple,
+    outline_color: tuple = (255,255,255),
+    shadow_color: tuple = (0,0,0),
+    outline_offset: int = 2,
+    shadow_offset: int = 4
+) -> None:
+    """
+    Dessine un texte avec ombre et contour sur une surface pygame.
+
+    Args:
+        surface (pygame.Surface): Surface cible.
+        text (str): Texte à afficher.
+        font (pygame.font.Font): Police utilisée.
+        pos (tuple): Position (x, y).
+        main_color (tuple): Couleur principale.
+        outline_color (tuple): Couleur du contour.
+        shadow_color (tuple): Couleur de l'ombre.
+        outline_offset (int): Décalage du contour.
+        shadow_offset (int): Décalage de l'ombre.
+    """
     import pygame
     x, y = pos
     shadow = font.render(text, True, shadow_color)
@@ -66,7 +118,27 @@ def draw_text_with_outline(surface, text, font, pos, main_color, outline_color=(
     main = font.render(text, True, main_color)
     surface.blit(main, (x, y))
 
-def draw_icon_text(surface, icon, text, font, pos, icon_size, gap=10):
+def draw_icon_text(
+    surface: "pygame.Surface",
+    icon: Optional["pygame.Surface"],
+    text: str,
+    font: "pygame.font.Font",
+    pos: tuple,
+    icon_size: int,
+    gap: int = 10
+) -> None:
+    """
+    Dessine une icône suivie d'un texte, centrés verticalement.
+
+    Args:
+        surface (pygame.Surface): Surface cible.
+        icon (pygame.Surface): Icône à afficher.
+        text (str): Texte à afficher.
+        font (pygame.font.Font): Police utilisée.
+        pos (tuple): Position (x, y).
+        icon_size (int): Taille de l'icône.
+        gap (int): Espace entre l'icône et le texte.
+    """
     import pygame
     x, y = pos
     if icon:
@@ -76,7 +148,18 @@ def draw_icon_text(surface, icon, text, font, pos, icon_size, gap=10):
     label = font.render(text, True, (30,30,30))
     surface.blit(label, (x, y + (icon_size - label.get_height()) // 2))
 
-def get_panel_surface(panel_width, panel_height, border_radius=24):
+def get_panel_surface(panel_width: int, panel_height: int, border_radius: int = 24) -> tuple:
+    """
+    Crée un panneau semi-transparent avec ombre.
+
+    Args:
+        panel_width (int): Largeur du panneau.
+        panel_height (int): Hauteur du panneau.
+        border_radius (int): Rayon des coins arrondis.
+
+    Returns:
+        tuple: (surface du panneau, surface de l'ombre)
+    """
     import pygame
     panel_surf = pygame.Surface((panel_width, panel_height), pygame.SRCALPHA)
     shadow = pygame.Surface((panel_width, panel_height), pygame.SRCALPHA)
@@ -85,23 +168,59 @@ def get_panel_surface(panel_width, panel_height, border_radius=24):
     pygame.draw.rect(panel_surf, (200,200,220,180), (0,0,panel_width,panel_height), 2, border_radius=border_radius)
     return panel_surf, shadow
 
-def get_best_font(size):
+def get_best_font(size: int) -> "pygame.font.Font":
+    """
+    Retourne une police sans empattement conviviale pour titres/boutons.
+
+    Args:
+        size (int): Taille de la police.
+
+    Returns:
+        pygame.font.Font: Objet police pygame.
+    """
     return load_font([
         "Montserrat", "Segoe UI", "Arial", "Verdana", "Liberation Sans", "DejaVu Sans"
     ], size)
 
-def get_panel_font(size):
+def get_panel_font(size: int) -> "pygame.font.Font":
+    """
+    Retourne une police monospace conviviale pour chiffres/timers.
+
+    Args:
+        size (int): Taille de la police.
+
+    Returns:
+        pygame.font.Font: Objet police pygame.
+    """
     return load_font([
         "Consolas", "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Courier New"
     ], size)
 
 # === Fonction pour dessiner le panneau d'état ===
 def draw_status_panel(
-    surface, x, y, label, score, goal, ammo, time_left,
-    BIRD_IMG, AMMO_IMG, TIMER_IMG,
-    stat_font, label_font, get_panel_surface_func,
-    padding_x=24, padding_y=14, section_gap=32, icon_text_gap=10
-):
+    surface: "pygame.Surface",
+    x: int, y: int, label: str, score: int, goal: int, ammo: int, time_left: int,
+    BIRD_IMG: Optional["pygame.Surface"], AMMO_IMG: Optional["pygame.Surface"], TIMER_IMG: Optional["pygame.Surface"],
+    stat_font: "pygame.font.Font", label_font: "pygame.font.Font", get_panel_surface_func,
+    padding_x: int = 24, padding_y: int = 14, section_gap: int = 32, icon_text_gap: int = 10
+) -> None:
+    """
+    Dessine le panneau d'état du jeu (niveau, score, munitions, temps).
+
+    Args:
+        surface (pygame.Surface): Surface cible.
+        x (int): Position X du panneau.
+        y (int): Position Y du panneau.
+        label (str): Nom du niveau.
+        score (int): Score actuel.
+        goal (int): Score à atteindre.
+        ammo (int): Nombre de munitions.
+        time_left (int): Temps restant.
+        BIRD_IMG, AMMO_IMG, TIMER_IMG: Icônes.
+        stat_font, label_font: Polices utilisées.
+        get_panel_surface_func: Fonction pour obtenir la surface du panneau.
+        padding_x, padding_y, section_gap, icon_text_gap: Espacements.
+    """
     import pygame
     icon_size = stat_font.get_height()
     panel_height = icon_size + 2 * padding_y
@@ -142,7 +261,14 @@ def draw_status_panel(
     surface.blit(panel_surf, (x, y))
 
 # === Chargement et dessin du fond d'écran ===
-def draw_landfill_background(surface, BACKGROUND_IMG=None):
+def draw_landfill_background(surface: "pygame.Surface", BACKGROUND_IMG: Optional["pygame.Surface"] = None) -> None:
+    """
+    Dessine le fond d'écran du jeu.
+
+    Args:
+        surface (pygame.Surface): Surface cible.
+        BACKGROUND_IMG (pygame.Surface | None): Image de fond, ou None pour couleur par défaut.
+    """
     import pygame
     if BACKGROUND_IMG:
         surface.blit(BACKGROUND_IMG, (0, 0))
@@ -150,13 +276,29 @@ def draw_landfill_background(surface, BACKGROUND_IMG=None):
         surface.fill((100, 180, 255))
 
 # === Fonctions de dessin des éléments du jeu ===
-def draw_dog(surface, x, y, jump_phase, smile=True):
+def draw_dog(surface: "pygame.Surface", x: int, y: int, jump_phase: float) -> None:
+    """
+    Dessine le chien sur la surface.
+
+    Args:
+        surface (pygame.Surface): Surface cible.
+        x (int): Position X.
+        y (int): Position Y.
+        jump_phase (float): Phase du saut.
+    """
     import pygame
     surface.blit(SHELTIE_IMG, (x, y))
 
 MAGPIE_BODY_RADIUS = 32
 
-def draw_magpie(surface, pos):
+def draw_magpie(surface: "pygame.Surface", pos: tuple) -> None:
+    """
+    Dessine une pie à la position donnée.
+
+    Args:
+        surface (pygame.Surface): Surface cible.
+        pos (tuple): Position (x, y) de la pie.
+    """
     import pygame
     x, y = pos
     pygame.draw.ellipse(surface, (0,0,0), (x - 28, y - 12, 56, 24), OUTLINE_W)
@@ -173,7 +315,14 @@ def draw_magpie(surface, pos):
     pygame.draw.circle(surface, MAGPIE_WHITE, (x + 28, y - 10), 4)
     pygame.draw.circle(surface, MAGPIE_BLACK, (x + 28, y - 10), 2)
 
-def draw_crosshair(surface, pos):
+def draw_crosshair(surface: "pygame.Surface", pos: tuple) -> None:
+    """
+    Dessine le viseur à la position donnée.
+
+    Args:
+        surface (pygame.Surface): Surface cible.
+        pos (tuple): Position (x, y) du viseur.
+    """
     import pygame
     x, y = pos
     crosshair_surf = pygame.Surface((44, 44), pygame.SRCALPHA)
@@ -185,7 +334,25 @@ def draw_crosshair(surface, pos):
     pygame.draw.circle(crosshair_surf, red, (center, center), 5, 2)
     surface.blit(crosshair_surf, (x - center, y - center))
 
-def draw_button(surface, rect, text, font, color, hover=False):
+def draw_button(
+    surface: "pygame.Surface",
+    rect: "pygame.Rect",
+    text: str,
+    font: "pygame.font.Font",
+    color: tuple,
+    hover: bool = False
+) -> None:
+    """
+    Dessine un bouton stylisé.
+
+    Args:
+        surface (pygame.Surface): Surface cible.
+        rect (pygame.Rect): Rectangle du bouton.
+        text (str): Texte du bouton.
+        font (pygame.font.Font): Police utilisée.
+        color (tuple): Couleur principale.
+        hover (bool): Si True, effet survol.
+    """
     import pygame
     btn_surf = pygame.Surface((rect.width, rect.height), pygame.SRCALPHA)
     pygame.draw.rect(btn_surf, (*color, 170), (0,0,rect.width,rect.height), border_radius=22)
@@ -199,13 +366,33 @@ def draw_button(surface, rect, text, font, color, hover=False):
 # === Classes POO pour les entités du jeu ===
 @dataclass
 class Magpie:
+    """
+    Représente une pie (oiseau) dans le jeu.
+
+    Attributs:
+        pos (List[float]): Position [x, y].
+        vel (List[float]): Vitesse [vx, vy].
+        flying_away (bool): Si la pie s'envole.
+        fly_away_timer (int): Timer d'envol.
+    """
     pos: List[float] = field(default_factory=lambda: [0.0, 0.0])
     vel: List[float] = field(default_factory=lambda: [0.0, 0.0])
     flying_away: bool = False
     fly_away_timer: int = 0
 
     @classmethod
-    def create_random(cls, speed: float, screen_height: int, body_radius: int) -> 'Magpie':
+    def create_random(cls, speed: float, screen_height: int, body_radius: int) -> "Magpie":
+        """
+        Crée une pie avec position et vitesse aléatoires.
+
+        Args:
+            speed (float): Vitesse de base.
+            screen_height (int): Hauteur de l'écran.
+            body_radius (int): Rayon du corps.
+
+        Returns:
+            Magpie: Instance de pie.
+        """
         start_x = body_radius
         start_y = random.randint(body_radius, screen_height - 150 - body_radius)
         vx = speed * random.uniform(0.9, 1.2)
@@ -213,6 +400,15 @@ class Magpie:
         return cls(pos=[start_x, start_y], vel=[vx, vy])
 
     def update(self, speed: float, width: int, height: int, body_radius: int) -> None:
+        """
+        Met à jour la position et l'état de la pie.
+
+        Args:
+            speed (float): Vitesse de base.
+            width (int): Largeur de l'écran.
+            height (int): Hauteur de l'écran.
+            body_radius (int): Rayon du corps.
+        """
         if self.flying_away:
             self.pos[1] -= 12
             self.fly_away_timer -= 1
@@ -222,6 +418,14 @@ class Magpie:
             self._move_and_bounce(speed, width, height, body_radius)
 
     def _respawn(self, speed: float, width: int, height: int) -> None:
+        """
+        Replace la pie à une nouvelle position aléatoire.
+
+        Args:
+            speed (float): Vitesse de base.
+            width (int): Largeur de l'écran.
+            height (int): Hauteur de l'écran.
+        """
         self.pos[0] = random.randint(100, width - 100)
         self.pos[1] = random.randint(200, height - 200)
         direction_x = 1 if random.random() < 0.5 else -1
@@ -231,6 +435,15 @@ class Magpie:
         self.flying_away = False
 
     def _move_and_bounce(self, speed: float, width: int, height: int, body_radius: int) -> None:
+        """
+        Déplace la pie et gère les rebonds sur les bords.
+
+        Args:
+            speed (float): Vitesse de base.
+            width (int): Largeur de l'écran.
+            height (int): Hauteur de l'écran.
+            body_radius (int): Rayon du corps.
+        """
         self.pos[0] += self.vel[0]
         self.pos[1] += self.vel[1]
         bounced = False
@@ -246,6 +459,17 @@ class Magpie:
             self.vel[1] = speed * (1 if random.random() < 0.5 else -1)
 
     def check_hit(self, mx: int, my: int, body_radius: int) -> bool:
+        """
+        Vérifie si la pie est touchée par un clic.
+
+        Args:
+            mx (int): Position X du clic.
+            my (int): Position Y du clic.
+            body_radius (int): Rayon du corps.
+
+        Returns:
+            bool: True si touchée, False sinon.
+        """
         if not self.flying_away:
             dx = mx - self.pos[0]
             dy = my - self.pos[1]
@@ -256,10 +480,27 @@ class Magpie:
         return False
 
     def get_position(self) -> Tuple[int, int]:
+        """
+        Retourne la position entière de la pie.
+
+        Returns:
+            Tuple[int, int]: (x, y)
+        """
         return (int(self.pos[0]), int(self.pos[1]))
 
 @dataclass
 class Dog:
+    """
+    Représente le chien dans le jeu.
+
+    Attributs:
+        x (int): Position X.
+        y (int): Position Y.
+        jump_phase (float): Phase du saut.
+        jumping (bool): Si le chien saute.
+        jump_total (float): Durée totale du saut.
+        jump_started (bool): Si le saut a commencé.
+    """
     x: int
     y: int
     jump_phase: float = 0.0
@@ -268,11 +509,20 @@ class Dog:
     jump_started: bool = False
 
     def start_jump(self) -> None:
+        """
+        Démarre l'animation de saut.
+        """
         self.jump_started = True
         self.jumping = True
         self.jump_phase = 0.0
 
     def update_jump(self) -> bool:
+        """
+        Met à jour l'animation de saut.
+
+        Returns:
+            bool: True si le saut est terminé.
+        """
         if self.jumping:
             self.jump_phase += 0.07
             if self.jump_phase >= self.jump_total:
@@ -281,15 +531,42 @@ class Dog:
         return False
 
     def get_jump_y(self) -> int:
+        """
+        Retourne la position Y pendant le saut.
+
+        Returns:
+            int: Position Y actuelle.
+        """
         if self.jumping:
             return self.y - int(30 * abs(math.sin(self.jump_phase)))
         return self.y
 
     def is_clicked(self, mx: int, my: int, img_width: int, img_height: int) -> bool:
+        """
+        Vérifie si le chien est cliqué.
+
+        Args:
+            mx (int): Position X du clic.
+            my (int): Position Y du clic.
+            img_width (int): Largeur de l'image.
+            img_height (int): Hauteur de l'image.
+
+        Returns:
+            bool: True si cliqué, False sinon.
+        """
         return (self.x <= mx <= self.x + img_width and 
                 self.y <= my <= self.y + img_height)
 
 def get_difficulty_settings(difficulty: str) -> Optional[dict]:
+    """
+    Retourne les paramètres de difficulté selon le niveau choisi.
+
+    Args:
+        difficulty (str): "Facile", "Moyen", "Difficile".
+
+    Returns:
+        dict | None: Paramètres de difficulté ou None si inconnu.
+    """
     match difficulty:
         case "Facile":
             return {"magpie_count": 1, "speed": 3, "ammo": 10, "goal": 5, "time": 30, "label": "Facile"}
@@ -301,10 +578,31 @@ def get_difficulty_settings(difficulty: str) -> Optional[dict]:
             return None
 
 def create_magpies(count: int, speed: float, screen_height: int, body_radius: int) -> List[Magpie]:
+    """
+    Crée une liste de pies aléatoires.
+
+    Args:
+        count (int): Nombre de pies.
+        speed (float): Vitesse de base.
+        screen_height (int): Hauteur de l'écran.
+        body_radius (int): Rayon du corps.
+
+    Returns:
+        List[Magpie]: Liste de pies.
+    """
     return [Magpie.create_random(speed, screen_height, body_radius) for _ in range(count)]
 
+# Exemple d'exception personnalisée pour le jeu
+class GameResourceError(Exception):
+    """Exception levée lors d'une erreur de chargement de ressource du jeu."""
+    pass
+
 # === Fonction principale du jeu ===
-def main():
+def main() -> None:
+    """
+    Fonction principale du jeu. Initialise pygame, charge les ressources,
+    gère le menu, la boucle de jeu et les événements.
+    """
     import pygame
     try:
         pygame.init()
@@ -487,7 +785,8 @@ def main():
                     BIRD_IMG = load_icon('bird.png')
                     AMMO_IMG = load_icon('ammo.png')
                     TIMER_IMG = load_icon('timer.png')
-                except Exception as e:
+                except GameResourceError as e:
+                    print(f"Erreur critique de ressource : {e}")
                     BIRD_IMG = AMMO_IMG = TIMER_IMG = None
                 while running_round:
                     try:
