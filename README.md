@@ -21,21 +21,27 @@ This game is a personal and modern reinterpretation inspired by the legendary **
 
 ## Installation
 
-1. Install Python 3.x
+1. Install Python 3.x  
    https://www.python.org/downloads/
 
-2. Install the pygame library:
+2. **Create a virtual environment** (recommended):  
+   On Windows:
    ```
-   pip install pygame
+   python -m venv .venv
+   .venv\Scripts\activate
    ```
-3. Download or clone this GitHub repository:
+   On macOS/Linux:
+   ```
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
 
+3. **Install dependencies**:
    ```
-   git clone https://github.com/moyamelissa/Chasse_Express
-   cd chasse-express
+   pip install -r requirements.txt
    ```
-   
-4. Move into the project folder and launch the game:
+
+4. Launch the game:
    ```
    python chasse_express.py
    ```
@@ -43,9 +49,10 @@ This game is a personal and modern reinterpretation inspired by the legendary **
 ## Controls
 
 - **Mouse**:
-  - Click on the dog to make him bark and start the game.
+  - Click on the desired level in the menu.
+  - Click on the dog to start the game.
   - Click on the magpies to catch them.
- 
+
 ## Preview
 ![Game preview](Chasse_Express.png)
 
@@ -73,3 +80,4 @@ This game is a personal and modern reinterpretation inspired by the legendary **
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+
