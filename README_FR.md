@@ -22,29 +22,35 @@ Ce jeu est une réinterprétation moderne et personelle, inspirée du légendair
 
 ## Installation
 
-1. Installer Python 3.x
+1. Installez Python 3.x  
    https://www.python.org/downloads/
 
-2. Installez la bibliothèque pygame :
-	```
-	pip install pygame
-	```
-3. Téléchargez ou clonez ce dépôt GitHub.
-
+2. **Créez un environnement virtuel** (recommandé) :  
+   Sous Windows :
    ```
-	git clone https://github.com/moyamelissa/Chasse_Express
-	cd chasse-express
-	```
-   
-4. Placez-vous dans le dossier du projet et lancez le jeu :
-	```
-	python chasse_express.py
-	```
+   python -m venv .venv
+   .venv\Scripts\activate
+   ```
+   Sous macOS/Linux :
+   ```
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
 
+3. **Installez les dépendances** :
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. Lancez le jeu :
+   ```
+   python chasse_express.py
+   ```
 ## Commandes
 
 - **Souris** :
-  - Cliquez sur le chien pour le faire aboyer et démarrer la partie.
+  - Cliquez sur le niveau désiré dans le menu.
+  - Cliquez sur le chien pour démarrer la partie.
   - Cliquez sur les pies pour les capturer.
  
 ## Aperçu
