@@ -54,7 +54,7 @@ Ce jeu est une réinterprétation moderne et personelle, inspirée du légendair
   - Cliquez sur les pies pour les capturer.
  
 ## Aperçu
-![Aperçu du jeu](Chasse_Express.png)
+![Aperçu du jeu](Game_Preview.png)
 
 ## Crédits
 
