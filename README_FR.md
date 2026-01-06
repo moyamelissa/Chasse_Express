@@ -1,3 +1,5 @@
+[![CI](https://github.com/moyamelissa/Chasse_Express/actions/workflows/python-app.yml/badge.svg)](https://github.com/moyamelissa/Chasse_Express/actions)
+
 # Chasse Express
 
 **Chasse Express** est un jeu d’adresse en 2D développé en **Python** avec **Pygame**. Incarnez un chasseur accompagné de votre Sheltie fidèle, dont l’aboiement fait surgir et effraye les pies ! À vous de viser juste et de capturer le nombre de pies demandé avant la fin du temps imparti.
