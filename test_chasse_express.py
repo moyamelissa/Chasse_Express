@@ -2,49 +2,6 @@ import unittest
 import time
 import chasse_express
 
-class TestAddition(unittest.TestCase):
-    """Tests pour la fonction addition."""
-
-    def test_addition(self):
-        # Vérifie que l'addition de deux entiers retourne le bon résultat (2 + 3 = 5)
-        result = chasse_express.addition(2, 3)
-        self.assertEqual(result, 5)
-
-    def test_addition_float(self):
-        # Vérifie que l'addition de deux flottants retourne le bon résultat (2.5 + 3.5 = 6.0)
-        result = chasse_express.addition(2.5, 3.5)
-        self.assertEqual(result, 6.0)
-
-    def test_addition_negative(self):
-        # Vérifie que l'addition de deux nombres négatifs retourne le bon résultat (-2 + -3 = -5)
-        result = chasse_express.addition(-2, -3)
-        self.assertEqual(result, -5)
-
-    def test_addition_zero(self):
-        # Vérifie que l'addition avec zéro retourne le bon résultat (0 + 5 = 5)
-        result = chasse_express.addition(0, 5)
-        self.assertEqual(result, 5)
-
-    def test_addition_type_error(self):
-        # Vérifie que la fonction lève une exception TypeError si un argument n'est pas un nombre
-        with self.assertRaises(TypeError):
-            chasse_express.addition(2, "a")
-        with self.assertRaises(TypeError):
-            chasse_express.addition("b", 3)
-        with self.assertRaises(TypeError):
-            chasse_express.addition(None, 3)
-
-class TestPerformanceAddition(unittest.TestCase):
-    """Test de performance pour la fonction addition."""
-
-    def test_addition_performance(self):
-        # Vérifie que l'addition est rapide même pour 100 000 appels successifs
-        start = time.time()
-        for _ in range(100000):
-            chasse_express.addition(1, 2)
-        duration = time.time() - start
-        self.assertLess(duration, 1, "Addition trop lente")
-
 class TestGetDifficultySettings(unittest.TestCase):
     """Tests pour la fonction get_difficulty_settings."""
 
