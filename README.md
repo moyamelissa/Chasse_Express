@@ -56,7 +56,7 @@ This game is a personal and modern reinterpretation inspired by the legendary **
   - Click on the magpies to catch them.
 
 ## Preview
-![Game preview](Chasse_Express.png)
+![Game preview](Game_Preview.png)
 
 ## Credits
 
