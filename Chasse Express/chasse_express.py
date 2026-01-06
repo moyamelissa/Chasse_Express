@@ -21,6 +21,104 @@ from resources import load_image, load_sound, load_font, load_icon
 import pygame
 import sys
 
+# =========================
+# Fonctions utilitaires exposées pour les tests
+# =========================
+
+def get_difficulty_settings(difficulty: str) -> dict:
+    """
+    Retourne les paramètres de difficulté pour un niveau donné.
+    :param difficulty: Nom du niveau de difficulté ("Facile", "Moyen", "Difficile")
+    :return: Dictionnaire des paramètres ou None si le niveau n'existe pas
+    """
+    return DIFFICULTY_SETTINGS.get(difficulty)
+
+def get_best_font(size: int) -> "pygame.font.Font":
+    """
+    Retourne la meilleure police disponible pour la taille donnée.
+    :param size: Taille de la police
+    :return: Objet pygame.font.Font
+    """
+    return load_font(["Montserrat", "Arial", "Helvetica"], size)
+
+def get_panel_font(size: int) -> "pygame.font.Font":
+    """
+    Retourne une police pour les panneaux (monospace).
+    :param size: Taille de la police
+    :return: Objet pygame.font.Font
+    """
+    return load_font(["Consolas", "Courier New", "Courier"], size)
+
+def get_panel_surface(width: int, height: int, border_radius: int = 24) -> tuple:
+    """
+    Crée une surface de panneau avec ombre.
+    :param width: Largeur du panneau
+    :param height: Hauteur du panneau
+    :param border_radius: Rayon des bords arrondis
+    :return: Tuple (surface panneau, surface ombre)
+    """
+    return obtenir_surface_panneau(width, height, border_radius)
+
+def draw_icon_text(surface, icon, text, font, position, icon_size, spacing=10):
+    """
+    Dessine une icône suivie d'un texte.
+    :param surface: Surface pygame
+    :param icon: Image de l'icône (peut être None)
+    :param text: Texte à afficher
+    :param font: Police pygame
+    :param position: Tuple (x, y)
+    :param icon_size: Taille de l'icône
+    :param spacing: Espace entre l'icône et le texte
+    """
+    dessiner_icone_texte(surface, icon, text, font, position, icon_size, spacing)
+
+def draw_text_with_outline(surface, text, font, position, main_color, outline_color=(255,255,255), shadow_color=(0,0,0), outline_offset=2, shadow_offset=4):
+    """
+    Dessine un texte avec contour et ombre.
+    :param surface: Surface pygame
+    :param text: Texte à afficher
+    :param font: Police pygame
+    :param position: Tuple (x, y)
+    :param main_color: Couleur principale du texte
+    :param outline_color: Couleur du contour
+    :param shadow_color: Couleur de l'ombre
+    :param outline_offset: Décalage du contour
+    :param shadow_offset: Décalage de l'ombre
+    """
+    dessiner_texte_avec_contour(surface, text, font, position, main_color, outline_color, shadow_color, outline_offset, shadow_offset)
+
+def draw_status_panel(surface, x, y, level, score, goal, ammo, time_left, bird_icon, ammo_icon, timer_icon, stat_font, label_font, get_panel_surface_func, margin_x=24, margin_y=14, section_spacing=32, icon_text_spacing=10):
+    """
+    Dessine le panneau d'état du jeu.
+    :param surface: Surface pygame
+    :param x: Position x
+    :param y: Position y
+    :param level: Niveau de difficulté
+    :param score: Score actuel
+    :param goal: Objectif de score
+    :param ammo: Munitions restantes
+    :param time_left: Temps restant
+    :param bird_icon: Icône d'oiseau
+    :param ammo_icon: Icône de munition
+    :param timer_icon: Icône de timer
+    :param stat_font: Police pour les statistiques
+    :param label_font: Police pour le label
+    :param get_panel_surface_func: Fonction pour créer la surface du panneau
+    :param margin_x: Marge horizontale
+    :param margin_y: Marge verticale
+    :param section_spacing: Espacement entre sections
+    :param icon_text_spacing: Espacement entre icône et texte
+    """
+    dessiner_panneau_etat(surface, x, y, level, score, goal, ammo, time_left, bird_icon, ammo_icon, timer_icon, stat_font, label_font, get_panel_surface_func, margin_x, margin_y, section_spacing, icon_text_spacing)
+
+def draw_landfill_background(surface, background_img):
+    """
+    Dessine le fond du jeu.
+    :param surface: Surface pygame
+    :param background_img: Image de fond (peut être None)
+    """
+    dessiner_fond(surface, background_img)
+
 def main():
     """
     Point d'entrée principal du jeu Chasse Express.
