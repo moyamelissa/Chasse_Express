@@ -11,8 +11,10 @@ SOUND_CACHE = {}
 def load_image(path):
     if path in IMAGE_CACHE:
         return IMAGE_CACHE[path]
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    abs_path = os.path.join(base_dir, path)
     try:
-        img = pygame.image.load(path).convert_alpha()
+        img = pygame.image.load(abs_path).convert_alpha()
         IMAGE_CACHE[path] = img
         return img
     except (pygame.error, FileNotFoundError):
