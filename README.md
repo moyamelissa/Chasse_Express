@@ -88,7 +88,8 @@ This game is a personal and modern reinterpretation inspired by the legendary **
   - Click on the magpies to catch them.
 
 ## Preview
-Watch the full demo video here: https://www.youtube.com/watch?v=i9o2AGhtbnA&feature=youtu.be
+
+Watch the full demo video here: https://youtu.be/i9o2AGhtbnA
 
 ![Game preview](Game_Preview.png)
 
