@@ -23,29 +23,61 @@ This game is a personal and modern reinterpretation inspired by the legendary **
 
 ## Installation
 
-1. Install Python 3.x  
+### Windows
+
+1. **Install Python 3.x**  
    https://www.python.org/downloads/
 
-2. **Create a virtual environment** (recommended):  
-   On Windows:
+2. **Navigate to the game directory**:
+   ```bash
+   cd "Chasse Express"
    ```
+
+3. **Create a virtual environment** (recommended):
+   ```bash
    python -m venv .venv
    .venv\Scripts\activate
    ```
-   On macOS/Linux:
+
+4. **Install dependencies**:
+   ```bash
+   pip install -r ../requirements.txt
    ```
+
+5. **Launch the game**: 
+   ```bash
+   python main.py
+   ```
+
+### Linux/macOS
+
+1. **Install Python 3.x**  
+   https://www.python.org/downloads/
+
+2. **Install required packages** (Ubuntu/Debian only):
+   ```bash
+   sudo apt install python3-pip python3-venv
+   ```
+
+3. **Navigate to the game directory**:
+   ```bash
+   cd "Chasse Express"
+   ```
+
+4. **Create a virtual environment** (recommended):
+   ```bash
    python3 -m venv .venv
    source .venv/bin/activate
    ```
 
-3. **Install dependencies**:
-   ```
-   pip install -r requirements.txt
+5. **Install dependencies**: 
+   ```bash
+   pip install -r ../requirements.txt
    ```
 
-4. Launch the game:
-   ```
-   python chasse_express.py
+6. **Launch the game**:
+   ```bash
+   python3 main.py
    ```
 
 ## Controls
