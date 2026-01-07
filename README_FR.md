@@ -22,30 +22,63 @@ Ce jeu est une réinterprétation moderne et personelle, inspirée du légendair
 
 ## Installation
 
-1. Installez Python 3.x  
+### Windows
+
+1. **Installez Python 3.x**  
    https://www.python.org/downloads/
 
-2. **Créez un environnement virtuel** (recommandé) :  
-   Sous Windows :
+2. **Naviguez vers le dossier du jeu** :
+   ```bash
+   cd "Chasse Express"
    ```
+
+3. **Créez un environnement virtuel** (recommandé) :
+   ```bash
    python -m venv .venv
    .venv\Scripts\activate
    ```
-   Sous macOS/Linux :
+
+4. **Installez les dépendances** :
+   ```bash
+   pip install -r ../requirements.txt
    ```
+
+5. **Lancez le jeu** :
+   ```bash
+   python main.py
+   ```
+
+### Linux/macOS
+
+1. **Installez Python 3.x**  
+   https://www.python.org/downloads/
+
+2. **Installez les paquets requis** (Ubuntu/Debian seulement) :
+   ```bash
+   sudo apt install python3-pip python3-venv
+   ```
+
+3. **Naviguez vers le dossier du jeu** :
+   ```bash
+   cd "Chasse Express"
+   ```
+
+4. **Créez un environnement virtuel** (recommandé) :
+   ```bash
    python3 -m venv .venv
    source .venv/bin/activate
    ```
 
-3. **Installez les dépendances** :
-   ```
-   pip install -r requirements.txt
+5. **Installez les dépendances** :
+   ```bash
+   pip install -r ../requirements.txt
    ```
 
-4. Lancez le jeu :
+6. **Lancez le jeu** : 
+   ```bash
+   python3 main.py
    ```
-   python chasse_express.py
-   ```
+   
 ## Commandes
 
 - **Souris** :
