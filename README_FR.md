@@ -87,6 +87,9 @@ Ce jeu est une réinterprétation moderne et personelle, inspirée du légendair
   - Cliquez sur les pies pour les capturer.
  
 ## Aperçu
+
+Reardez la vidéo complète de démonstration ici : https://youtu.be/i9o2AGhtbnA
+
 ![Aperçu du jeu](Game_Preview.png)
 
 ## Crédits
