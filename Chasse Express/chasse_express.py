@@ -4,7 +4,7 @@
 # Ce module gère l'initialisation, le menu principal, la boucle de jeu, le score et la gestion des ressources.
 # Toutes les fonctions et classes externes sont importées au début pour une structure claire et modulaire.
 
-from entities import Magpie, Dog
+from entities import Pie, Chien
 from utils import ErreurRessourceJeu
 from ui import (
     dessiner_texte_avec_contour, dessiner_icone_texte, obtenir_surface_panneau, dessiner_panneau_etat,
@@ -181,7 +181,7 @@ def main():
             label = settings.get("label", "Facile")
             tree_x = 55
             tree_y = HEIGHT - 110 - 240//2 - 10
-            dog = Dog(x=tree_x + 150 + 18, y=HEIGHT - 170)
+            dog = Chien(x=tree_x + 150 + 18, y=HEIGHT - 170)
             magpies = []
             magpies_released = False
             timer_start = None
@@ -213,7 +213,7 @@ def main():
                     # --- Gestion des pies (oiseaux) ---
                     if magpies_released:
                         if not magpies:
-                            magpies = [Magpie.create_random(speed, HEIGHT, MAGPIE_BODY_RADIUS) for _ in range(magpie_count)]
+                            magpies = [Pie.create_random(speed, HEIGHT, MAGPIE_BODY_RADIUS) for _ in range(magpie_count)]
                         for m in magpies:
                             m.update(speed, WIDTH, HEIGHT, MAGPIE_BODY_RADIUS)
                             if not m.flying_away:
@@ -297,4 +297,3 @@ def main():
     # === Fin du jeu ===
     pygame.quit()
     sys.exit()
-
