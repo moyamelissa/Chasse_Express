@@ -1,5 +1,5 @@
 # =========================
-# Module des entités du jeu (Pie, Chien, Magpie, Dog)
+# Module des entités du jeu (Pie, Chien)
 # =========================
 from dataclasses import dataclass, field
 from typing import List, Tuple
@@ -244,3 +244,4 @@ class Dog:
     def is_clicked(self, mx: int, my: int, img_width: int, img_height: int) -> bool:
         return (self.x <= mx <= self.x + img_width and 
                 self.y <= my <= self.y + img_height)
+
