@@ -210,7 +210,7 @@ def main():
                             timer_start = pygame.time.get_ticks()
                     else:
                         screen.blit(sheltie_img, (dog.x, dog.y))
-                    # --- Gestion des pies (oiseaux) ---
+                    # --- Gestion des pies ---
                     if magpies_released:
                         if not magpies:
                             magpies = [Pie.create_random(speed, HEIGHT, MAGPIE_BODY_RADIUS) for _ in range(magpie_count)]
