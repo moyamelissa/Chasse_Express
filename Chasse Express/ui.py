@@ -111,7 +111,7 @@ def dessiner_panneau_etat(
 
 def dessiner_fond(surface: "pygame.Surface", image_fond: Optional["pygame.Surface"] = None) -> None:
     """
-    Dessine le fond du jeu (image ou couleur).
+    Dessine le fond du jeu : utilise une image si elle est fournie, sinon remplit avec une couleur bleue par défaut.
     """
     if image_fond:
         surface.blit(image_fond, (0, 0))
