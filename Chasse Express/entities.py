@@ -1,13 +1,18 @@
-# =========================
-# Module des entités du jeu (Pie, Chien)
-# =========================
+# ========================================
+# Module des entités du jeu (Magpie, Dog)
+# ========================================
+
+# ----- Imports -----
 from dataclasses import dataclass, field
 from typing import List, Tuple
 import math
 import random
 
+# ==============================
+# Classe Magpie (entité oiseau)
+# ==============================
 @dataclass
-class Pie:
+class Magpie:
     """
     Représente une pie (oiseau) dans le jeu.
     """
@@ -17,7 +22,7 @@ class Pie:
     fly_away_timer: int = 0
 
     @classmethod
-    def create_random(cls, speed: float, screen_height: int, body_radius: int) -> "Pie":
+    def create_random(cls, speed: float, screen_height: int, body_radius: int) -> "Magpie":
         """
         Crée une pie avec une position et une vitesse aléatoires.
         """
@@ -88,8 +93,11 @@ class Pie:
         """
         return (int(self.pos[0]), int(self.pos[1]))
 
+# ===========================
+# Classe Dog (entité chien)
+# ===========================
 @dataclass
-class Chien:
+class Dog:
     """
     Représente le chien dans le jeu.
     """
