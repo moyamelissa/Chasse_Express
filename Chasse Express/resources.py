@@ -1,3 +1,6 @@
+# =======================================
+# Imports et variables globales de cache
+# =======================================
 import os
 import pygame
 
@@ -6,6 +9,10 @@ FONT_CACHE = {}
 ICON_CACHE = {}
 IMAGE_CACHE = {}
 SOUND_CACHE = {}
+
+# =============================================
+# Fonctions de chargement d'images et d'icônes
+# =============================================
 
 # Charge et met en cache une image depuis le disque
 def load_image(path):
@@ -19,6 +26,28 @@ def load_image(path):
         return img
     except (pygame.error, FileNotFoundError):
         return None
+
+# Charge et met en cache une icône, génère une surface par défaut si le fichier est absent
+# Remarque : le fallback sert surtout à tester la gestion des fichiers manquants.
+# Il n'est techniquement pas nécessaire dans ce projet puisque toutes les images sont incluses dans le dépôt.
+def load_icon(path, fallback_size=32):
+    if path in ICON_CACHE:
+        return ICON_CACHE[path]
+    try:
+        img = pygame.image.load(path)
+        icon = img.convert_alpha()
+        ICON_CACHE[path] = icon
+        return icon
+    except (pygame.error, FileNotFoundError):
+        surf = pygame.Surface((fallback_size, fallback_size), pygame.SRCALPHA)
+        pygame.draw.rect(surf, (180, 180, 180, 200), (0, 0, fallback_size, fallback_size), border_radius=6)
+        pygame.draw.rect(surf, (120, 120, 120, 220), (0, 0, fallback_size, fallback_size), 2, border_radius=6)
+        ICON_CACHE[path] = surf
+        return surf
+
+# =============================================
+# Fonctions de chargement de sons et polices
+# =============================================
 
 # Charge et met en cache un son depuis le disque
 def load_sound(path):
@@ -57,23 +86,9 @@ def load_font(font_names, size):
     FONT_CACHE[key] = font
     return font
 
-# Charge et met en cache une icône, génère une surface par défaut si le fichier est absent
-# Remarque : le fallback sert surtout à tester la gestion des fichiers manquants.
-# Il n'est techniquement pas nécessaire dans ce projet puisque toutes les images sont incluses dans le dépôt.
-def load_icon(path, fallback_size=32):
-    if path in ICON_CACHE:
-        return ICON_CACHE[path]
-    try:
-        img = pygame.image.load(path)
-        icon = img.convert_alpha()
-        ICON_CACHE[path] = icon
-        return icon
-    except (pygame.error, FileNotFoundError):
-        surf = pygame.Surface((fallback_size, fallback_size), pygame.SRCALPHA)
-        pygame.draw.rect(surf, (180, 180, 180, 200), (0, 0, fallback_size, fallback_size), border_radius=6)
-        pygame.draw.rect(surf, (120, 120, 120, 220), (0, 0, fallback_size, fallback_size), 2, border_radius=6)
-        ICON_CACHE[path] = surf
-        return surf
+# ============================================
+# Exception personnalisée pour les ressources
+# ============================================
 
 class ErreurRessourceJeu(Exception):
     """
