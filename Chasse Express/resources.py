@@ -74,3 +74,9 @@ def load_icon(path, fallback_size=32):
         pygame.draw.rect(surf, (120, 120, 120, 220), (0, 0, fallback_size, fallback_size), 2, border_radius=6)
         ICON_CACHE[path] = surf
         return surf
+
+class ErreurRessourceJeu(Exception):
+    """
+    Exception levée lors d'une erreur de chargement de ressource du jeu.
+    """
+    pass
