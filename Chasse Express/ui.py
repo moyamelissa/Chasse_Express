@@ -1,9 +1,14 @@
-# =========================
+# ===================================================================
 # Fonctions d'affichage et d'interface graphique pour Chasse Express
-# =========================
+# ===================================================================
+
 import pygame
 from typing import Optional
 from settings import OUTLINE_W, MAGPIE_BLACK, MAGPIE_WHITE, MAGPIE_BLUE, MAGPIE_BEAK
+
+# =========================================
+# Fonctions de dessin de texte et d'icônes
+# =========================================
 
 def dessiner_texte_avec_contour(
     surface: "pygame.Surface",
@@ -49,6 +54,10 @@ def dessiner_icone_texte(
         x += taille_icone + espace
     etiquette = police.render(texte, True, (30,30,30))
     surface.blit(etiquette, (x, y + (taille_icone - etiquette.get_height()) // 2))
+
+# ==========================================
+# Fonctions de dessin de panneaux et d'état
+# ==========================================
 
 def obtenir_surface_panneau(largeur: int, hauteur: int, rayon_bord: int = 24) -> tuple:
     """
@@ -108,6 +117,10 @@ def dessiner_panneau_etat(
         if idx < len(groupes) - 1:
             dessiner_x += espace_section
     surface.blit(panneau, (x, y))
+
+# ========================================
+# Fonctions de dessin des éléments du jeu
+# ========================================
 
 def dessiner_fond(surface: "pygame.Surface", image_fond: Optional["pygame.Surface"] = None) -> None:
     """
