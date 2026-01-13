@@ -1,9 +1,12 @@
-# =========================
+# ========================================
 # Module principal du jeu Chasse Express
-# =========================
+# ========================================
 # Ce module gère l'initialisation, le menu principal, la boucle de jeu, le score et la gestion des ressources.
 # Toutes les fonctions et classes externes sont importées au début pour une structure claire et modulaire.
 
+# ========================================
+# Imports et constantes
+# ========================================
 from entities import Magpie, Dog
 from resources import ErreurRessourceJeu
 from ui import (
@@ -17,10 +20,17 @@ from settings import (
     BACKGROUND_IMG_PATH, BIRD_IMG_PATH, AMMO_IMG_PATH, TIMER_IMG_PATH
 )
 from resources import load_image, load_sound, load_font, load_icon
+from utils import (
+    calcule_score, consomme_munition, verifie_victoire, verifie_defaite,
+    temps_ecoule, pourcentage_objectif
+)
 
 import pygame
 import sys
 
+# ========================================
+# Fonction principale du jeu
+# ========================================
 def main():
     """
     Point d'entrée principal du jeu Chasse Express.
@@ -29,7 +39,9 @@ def main():
     - Lance la boucle de jeu principale pour chaque partie.
     - Gère le score, les munitions, le temps et la victoire/défaite.
     """
-    # === Initialisation de Pygame ===
+    # ========================================
+    # Initialisation de Pygame
+    # ========================================
     try:
         pygame.init()
         pygame.mixer.init()
@@ -37,7 +49,9 @@ def main():
         print(f"Erreur lors de l'initialisation de Pygame : {e}")
         sys.exit(1)
 
-    # === Création de la fenêtre principale ===
+    # ========================================
+    # Création de la fenêtre principale
+    # ========================================
     try:
         screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption('Chasse Express')
@@ -45,7 +59,9 @@ def main():
         print(f"Erreur lors de la création de la fenêtre : {e}")
         sys.exit(1)
 
-    # === Chargement des ressources graphiques et audio ===
+    # ========================================
+    # Chargement des ressources graphiques et audio
+    # ========================================
     try:
         sheltie_img = load_image(SHELTIE_IMG_PATH)
         if sheltie_img:
@@ -74,6 +90,9 @@ def main():
         print(f"Erreur critique de ressource : {e}")
         sys.exit(1)
 
+    # ========================================
+    # Fonctions utilitaires internes
+    # ========================================
     def dessiner_arbre(surface, x, y):
         """
         Dessine un arbre sur la surface donnée.
@@ -84,7 +103,9 @@ def main():
         if surface and tree_img:
             surface.blit(tree_img, (x, y))
 
-    # === Variables de contrôle du jeu ===
+    # ========================================
+    # Variables de contrôle du jeu
+    # ========================================
     pygame.mouse.set_visible(True)
     clock = pygame.time.Clock()
     title_font = pygame.font.SysFont("Montserrat", 96)
@@ -92,9 +113,13 @@ def main():
     difficulty = None
     running = True
 
-    # === Boucle principale du jeu ===
+    # ========================================
+    # Boucle principale du jeu
+    # ========================================
     while running:
-        # --- Affichage du menu principal ---
+        # ----------------------------------------
+        # Affichage du menu principal
+        # ----------------------------------------
         if menu:
             try:
                 dessiner_fond(screen, background_img)
@@ -159,7 +184,9 @@ def main():
                 print(f"Erreur dans le menu : {e}")
                 continue
 
-        # --- Vérification de la difficulté sélectionnée ---
+        # ----------------------------------------
+        # Vérification de la difficulté sélectionnée
+        # ----------------------------------------
         if not menu and (not difficulty or difficulty not in DIFFICULTY_SETTINGS):
             menu = True
             difficulty = None
@@ -168,7 +195,9 @@ def main():
         if menu:
             continue
 
-        # --- Boucle de la partie (manche) ---
+        # ----------------------------------------
+        # Boucle de la partie (manche)
+        # ----------------------------------------
         try:
             settings = DIFFICULTY_SETTINGS[difficulty]
             pygame.mouse.set_visible(False)
@@ -193,6 +222,7 @@ def main():
 
             while running_round:
                 try:
+                    # --- Affichage des éléments graphiques principaux ---
                     dessiner_fond(screen, background_img)
                     dessiner_arbre(screen, tree_x, tree_y)
                     dessiner_arbre(screen, WIDTH - 55 - 150, tree_y)
@@ -237,13 +267,13 @@ def main():
                         )
                     # --- Gestion de la victoire/défaite ---
                     if magpies_released:
-                        if score >= goal:
+                        if verifie_victoire(score, goal):
                             win = True
                             game_over = True
                             if not timer_frozen:
                                 frozen_time_left = time_left if time_left is not None else 0
                                 timer_frozen = True
-                        elif ammo <= 0 or (timer_start and time_left <= 0):
+                        elif verifie_defaite(ammo, time_left):
                             win = False
                             game_over = True
                             if not timer_frozen:
@@ -282,9 +312,9 @@ def main():
                                 if ammo > 0:
                                     for m in magpies:
                                         if m.check_hit(mx, my, MAGPIE_BODY_RADIUS):
-                                            score += 1
+                                            score = calcule_score(score)
                                             break
-                                    ammo -= 1
+                                    ammo = consomme_munition(ammo)
                     pygame.display.flip()
                     clock.tick(60)
                 except Exception as e:
@@ -294,6 +324,8 @@ def main():
             print(f"Erreur de configuration de difficulté : {e}")
             menu = True
             continue
-    # === Fin du jeu ===
+    # ========================================
+    # Fin du jeu
+    # ========================================
     pygame.quit()
     sys.exit()
