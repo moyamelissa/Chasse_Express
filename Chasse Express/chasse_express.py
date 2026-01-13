@@ -4,11 +4,23 @@
 # Ce module gère l'initialisation, le menu principal, la boucle de jeu, le score et la gestion des ressources.
 # Toutes les fonctions et classes externes sont importées au début pour une structure claire et modulaire.
 
+
 # ========================================
 # Imports et constantes
 # ========================================
+
+# --- Imports standards et bibliothèques externes ---
+try:
+    import pygame
+except ImportError:
+    print("Pygame est requis. Installez-le avec : pip install pygame")
+    import sys
+    sys.exit(1)
+import sys
+
+# --- Imports des modules du projet ---
 from entities import Magpie, Dog
-from resources import ErreurRessourceJeu
+from resources import ErreurRessourceJeu, load_image, load_sound, load_font, load_icon
 from ui import (
     dessiner_texte_avec_contour, dessiner_icone_texte, obtenir_surface_panneau, dessiner_panneau_etat,
     dessiner_fond, dessiner_chien, dessiner_pie, dessiner_viseur, dessiner_bouton
@@ -19,14 +31,11 @@ from settings import (
     SHELTIE_IMG_PATH, BARKING_SOUND_PATH, AMBIANCE_MUSIC_PATH, TREE_IMG_PATH,
     BACKGROUND_IMG_PATH, BIRD_IMG_PATH, AMMO_IMG_PATH, TIMER_IMG_PATH
 )
-from resources import load_image, load_sound, load_font, load_icon
 from utils import (
     calcule_score, consomme_munition, verifie_victoire, verifie_defaite,
     temps_ecoule, pourcentage_objectif
 )
 
-import pygame
-import sys
 
 # ========================================
 # Fonction principale du jeu
@@ -59,9 +68,9 @@ def main():
         print(f"Erreur lors de la création de la fenêtre : {e}")
         sys.exit(1)
 
-    # ========================================
+    # ==============================================
     # Chargement des ressources graphiques et audio
-    # ========================================
+    # ==============================================
     try:
         sheltie_img = load_image(SHELTIE_IMG_PATH)
         if sheltie_img:
